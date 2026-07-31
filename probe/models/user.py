@@ -23,4 +23,4 @@ class User(Base, TimestampMixin):
 
     devices = relationship("devices", back_populates="users")
     batteries = relationship("batteries", back_populates="users")
-    bookings = relationship("Booking", back_populates="users")
+    bookings = relationship("bookings", back_populates="users")
