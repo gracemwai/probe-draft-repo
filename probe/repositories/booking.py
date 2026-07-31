@@ -1,40 +1,36 @@
 import uuid
-from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from ..models.booking import Booking
+from models.booking import Booking
 
 
 class BookingRepository:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self):
+        self.model = Booking
 
-    def get_by_id(self, booking_id: uuid.UUID) -> Optional[Booking]:
-        return self.db.query(Booking).filter(Booking.booking_id == booking_id).first()
+    def get(self, db: Session, id: uuid.UUID):
+        return db.get(self.model, id)
 
-    def get_all(self) -> List[Booking]:
-        return self.db.query(Booking).all()
+    def get_all(self, db: Session):
+        return db.query(self.model).all()
 
-    def create(self, booking: Booking) -> Booking:
-        self.db.add(booking)
-        self.db.commit()
-        self.db.refresh(booking)
+    def create(self, db: Session, data: dict):
+        booking = self.model(**data)
+        db.add(booking)
+        db.commit()
+        db.refresh(booking)
         return booking
 
-    def update(self, booking_id: uuid.UUID, **kwargs) -> Optional[Booking]:
-        db_booking = self.get_by_id(booking_id)
-        if db_booking:
-            for key, value in kwargs.items():
-                setattr(db_booking, key, value)
-            self.db.commit()
-            self.db.refresh(db_booking)
-        return db_booking
+    def update(self, db: Session, db_obj: Booking, data: dict):
+        for field, value in data.items():
+            setattr(db_obj, field, value)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
-    def delete(self, booking_id: uuid.UUID) -> bool:
-        db_booking = self.get_by_id(booking_id)
-        if db_booking:
-            self.db.delete(db_booking)
-            self.db.commit()
-            return True
-        return False
+    def delete(self, db: Session, db_obj: Booking):
+        db.delete(db_obj)
+        db.commit()
+
+booking_repository = BookingRepository()

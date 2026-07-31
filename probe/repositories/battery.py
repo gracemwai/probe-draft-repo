@@ -1,40 +1,36 @@
 import uuid
-from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from ..models.battery import Battery
+from models.battery import Battery
 
 
 class BatteryRepository:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self):
+        self.model = Battery
 
-    def get_by_id(self, battery_id: uuid.UUID) -> Optional[Battery]:
-        return self.db.query(Battery).filter(Battery.battery_id == battery_id).first()
+    def get(self, db: Session, id: uuid.UUID):
+        return db.get(self.model, id)
 
-    def get_all(self) -> List[Battery]:
-        return self.db.query(Battery).all()
+    def get_all(self, db: Session):
+        return db.query(self.model).all()
 
-    def create(self, battery: Battery) -> Battery:
-        self.db.add(battery)
-        self.db.commit()
-        self.db.refresh(battery)
+    def create(self, db: Session, data: dict):
+        battery = self.model(**data)
+        db.add(battery)
+        db.commit()
+        db.refresh(battery)
         return battery
 
-    def update(self, battery_id: uuid.UUID, **kwargs) -> Optional[Battery]:
-        db_battery = self.get_by_id(battery_id)
-        if db_battery:
-            for key, value in kwargs.items():
-                setattr(db_battery, key, value)
-            self.db.commit()
-            self.db.refresh(db_battery)
-        return db_battery
+    def update(self, db: Session, db_obj: Battery, data: dict):
+        for field, value in data.items():
+            setattr(db_obj, field, value)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
-    def delete(self, battery_id: uuid.UUID) -> bool:
-        db_battery = self.get_by_id(battery_id)
-        if db_battery:
-            self.db.delete(db_battery)
-            self.db.commit()
-            return True
-        return False
+    def delete(self, db: Session, db_obj: Battery):
+        db.delete(db_obj)
+        db.commit()
+
+battery_repository = BatteryRepository()
