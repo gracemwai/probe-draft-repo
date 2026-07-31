@@ -2,9 +2,9 @@ import uuid
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from schemas.sensor_reading import SensorReadingCreate, SensorReadingRead, SensorReadingUpdate
+from probe.schemas.sensor_reading import SensorReadingCreate, SensorReadingRead, SensorReadingUpdate
 
-from services.sensor_reading import (
+from probe.services.sensor_reading import (
     get_sensor_reading,
     list_sensor_readings,
     create_sensor_reading,

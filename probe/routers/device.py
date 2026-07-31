@@ -2,8 +2,8 @@ import uuid
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from schemas.device import DeviceCreate, DeviceRead, DeviceUpdate
-from services.device import (
+from probe.schemas.device import DeviceCreate, DeviceRead, DeviceUpdate
+from probe.services.device import (
     get_device,
     list_devices,
     create_device,

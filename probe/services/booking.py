@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from uuid import UUID
 
-from ..repositories import BookingRepository, UserRepository, BatteryRepository
-from ..schemas.booking import BookingCreate, BookingUpdate
+from probe.repositories.booking import BookingRepository, UserRepository, BatteryRepository
+from probe.schemas.booking import BookingCreate, BookingUpdate
 
 def get_booking(db: Session, booking_id: UUID):
   

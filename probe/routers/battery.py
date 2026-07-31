@@ -2,9 +2,9 @@ import uuid
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from schemas.battery import BatteryCreate, BatteryRead, BatteryUpdate
+from probe.schemas.battery import BatteryCreate, BatteryRead, BatteryUpdate
 
-from services.battery import (
+from probe.services.battery import (
     get_battery,
     list_batteries,
     create_battery,

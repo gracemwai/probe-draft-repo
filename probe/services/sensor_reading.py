@@ -3,8 +3,8 @@ from fastapi import HTTPException, status
 from uuid import UUID
 
 
-from ..repositories import SensorReadingRepository, BatteryRepository, DeviceRepository
-from ..schemas.sensor_reading import SensorReadingCreate, SensorReadingUpdate
+from probe.repositories.sensor_reading import SensorReadingRepository, BatteryRepository, DeviceRepository
+from probe.schemas.sensor_reading import SensorReadingCreate, SensorReadingUpdate
 
 R_NEW = 0.020   
 R_DEAD = 0.120  

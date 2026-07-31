@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-from enums import DeviceStatus
+from .enums import DeviceStatus
 
 from pydantic import BaseModel, ConfigDict
 

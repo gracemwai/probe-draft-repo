@@ -2,9 +2,9 @@ import uuid
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from schemas.user import UserCreate, UserRead, UserUpdate
+from probe.schemas.user import UserCreate, UserRead, UserUpdate
 
-from services.user import (
+from probe.services.user import (
     get_user,
     list_users,
     create_user,

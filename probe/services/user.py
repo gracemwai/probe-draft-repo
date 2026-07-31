@@ -3,8 +3,8 @@ from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from uuid import UUID
 
-from ..repositories import UserRepository
-from ..schemas.user import UserCreate, UserUpdate
+from probe.repositories.user import UserRepository
+from probe.schemas.user import UserCreate, UserUpdate
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
