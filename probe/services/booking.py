@@ -1,57 +1,58 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from repository.booking_repository import booking_repository
-from repository.user_repository import user_repository
-from repository.battery_repository import battery_repository
-from schemas.booking import BookingCreate, BookingUpdate
+from uuid import UUID
 
-def get_booking(db: Session, booking_id: str):
-    booking = booking_repository.get(db, booking_id)
+from ..repositories import BookingRepository, UserRepository, BatteryRepository
+from ..schemas.booking import BookingCreate, BookingUpdate
+
+def get_booking(db: Session, booking_id: UUID):
+  
+    booking = BookingRepository.get_by_id(db, booking_id)
     if not booking:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking record not found")
     return booking
 
 def list_bookings(db: Session):
-    return booking_repository.get_all(db)
+    return BookingRepository.get_all(db)
 
 def create_booking(db: Session, data: BookingCreate):
- 
-    if not data.status.strip():
+    clean_status = data.status.value.strip() if hasattr(data.status, 'value') else str(data.status).strip()
+    if not clean_status:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail="Initial workflow tracking state cannot be empty."
         )
 
-    buyer = user_repository.get(db, data.user_id)
-    if not buyer or buyer.user_type != "second_life_buyer":
+    buyer = UserRepository.get_by_id(db, data.user_id)
+    if not buyer or buyer.user_type != "UPS COMPANY":  
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, 
             detail="Access Denied: Account role unauthorized to initialize purchasing transactions."
         )
 
-    battery = battery_repository.get(db, data.battery_id)
+    battery = BatteryRepository.get_by_id(db, data.battery_id)
     if not battery:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="Target hardware entity profile not found."
         )
         
-    if battery.status != "available":
+    if battery.status != "AVAILABLE":  
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail="Transaction Conflict: Asset locked by another operational session."
         )
 
-    battery_repository.update(db, battery, {"status": "reserved"})
+    BatteryRepository.update(db, battery, {"status": "PROCESSING"})
 
     dumped_data = data.model_dump()
-    dumped_data["status"] = data.status.strip()
-    return booking_repository.create(db, dumped_data)
+    dumped_data["status"] = clean_status
+    return BookingRepository.create(db, dumped_data)
 
-def update_booking(db: Session, booking_id: str, data: BookingUpdate):
+def update_booking(db: Session, booking_id: UUID, data: BookingUpdate):
     booking = get_booking(db, booking_id)
-    return booking_repository.update(db, booking, data.model_dump(exclude_unset=True))
+    return BookingRepository.update(db, booking, data.model_dump(exclude_unset=True))
 
-def delete_booking(db: Session, booking_id: str):
+def delete_booking(db: Session, booking_id: UUID):
     booking = get_booking(db, booking_id)
-    return booking_repository.delete(db, booking)
+    return BookingRepository.delete(db, booking)
