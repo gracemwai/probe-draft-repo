@@ -1,13 +1,14 @@
 from datetime import datetime
 from uuid import UUID
+from enums import UserType
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 class UserBase(BaseModel):
     first_name: str
     last_name: str
-    email: EmailStr  # Enforces valid email formats (or use 'str' if preferred)
-    user_type: str
+    email: EmailStr  
+    user_type: UserType
     company_name: str
     
 class UserCreate(UserBase):
@@ -18,7 +19,7 @@ class UserUpdate(BaseModel):
     last_name: str | None = None
     email: EmailStr | None = None
     password_hash: str | None = None
-    user_type: str | None = None
+    user_type: UserType| None = None
     company_name: str | None = None
       
 class UserRead(UserBase):

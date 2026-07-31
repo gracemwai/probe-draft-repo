@@ -1,5 +1,6 @@
 from datetime import datetime
 from uuid import UUID
+from enums import DeviceStatus
 
 from pydantic import BaseModel, ConfigDict
 
@@ -8,7 +9,7 @@ class DeviceBase(BaseModel):
     error_code: str | None = None
     channel: str
     description: str | None = None
-    status: str
+    status:DeviceStatus
     
 class DeviceCreate(DeviceBase):
     pass
@@ -18,7 +19,7 @@ class DeviceUpdate(BaseModel):
     error_code: str | None = None
     channel: str | None = None
     description: str | None = None
-    status: str | None = None
+    status: DeviceStatus | None = None
       
 class DeviceRead(DeviceBase):
     model_config = ConfigDict(from_attributes=True)
