@@ -1,22 +1,22 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from repository.battery_repository import battery_repository
-from repository.user_repository import user_repository
-from schemas.battery import BatteryCreate, BatteryUpdate
+from uuid import UUID
+from ..repositories import BatteryRepository, UserRepository
+from ..schemas.battery import BatteryCreate, BatteryUpdate
 
-def get_battery(db: Session, battery_id: str):
-    battery = battery_repository.get(db, battery_id)
+def get_battery(db: Session, battery_id: UUID):
+   
+    battery = BatteryRepository.get_by_id(db, battery_id)
     if not battery:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Battery asset target not found")
     return battery
 
 def list_batteries(db: Session):
-    return battery_repository.get_all(db)
+    return BatteryRepository.get_all(db)
 
 def create_battery(db: Session, data: BatteryCreate):
-    
     clean_chemistry = data.chemistry.strip()
-    clean_status = data.status.strip()
+    clean_status = data.status.value.strip() if hasattr(data.status, 'value') else str(data.status).strip()
     clean_category = data.category.strip()
 
     if not clean_chemistry or not clean_status or not clean_category:
@@ -24,8 +24,9 @@ def create_battery(db: Session, data: BatteryCreate):
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail="Battery profile fields cannot consist of empty parameters."
         )
-    recycler = user_repository.get(db, data.recycler_id)
-    if not recycler or recycler.user_type != "recycler":
+
+    recycler = UserRepository.get_by_id(db, data.recycler_id)
+    if not recycler or recycler.user_type != "RECYCLER":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid asset assignment: Target recycler profile must exist and hold proper credentials."
@@ -36,12 +37,12 @@ def create_battery(db: Session, data: BatteryCreate):
     dumped_data["status"] = clean_status
     dumped_data["category"] = clean_category
     
-    return battery_repository.create(db, dumped_data)
+    return BatteryRepository.create(db, dumped_data)
 
-def update_battery(db: Session, battery_id: str, data: BatteryUpdate):
+def update_battery(db: Session, battery_id: UUID, data: BatteryUpdate):
     battery = get_battery(db, battery_id)
-    return battery_repository.update(db, battery, data.model_dump(exclude_unset=True))
+    return BatteryRepository.update(db, battery, data.model_dump(exclude_unset=True))
 
-def delete_battery(db: Session, battery_id: str):
+def delete_battery(db: Session, battery_id: UUID):
     battery = get_battery(db, battery_id)
-    return battery_repository.delete(db, battery)
+    return BatteryRepository.delete(db, battery)
