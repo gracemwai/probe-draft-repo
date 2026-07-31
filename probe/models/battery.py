@@ -7,7 +7,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from ..database import Base, TimestampMixin
+from database import Base, TimestampMixin
 
 
 
@@ -25,8 +25,5 @@ class Battery(Base, TimestampMixin):
 
     recycler = relationship("users", back_populates="batteries")
     device = relationship("devices", back_populates="batteries")
-
-
-
     sensor_readings = relationship("sensor_readings", back_populates="batteries")
-    bookings = relationship("Booking", back_populates="batteries")
+    bookings = relationship("bookings", back_populates="batteries")
