@@ -2,9 +2,9 @@ import uuid
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from schemas.booking import BookingCreate, BookingRead, BookingUpdate
+from probe.schemas.booking import BookingCreate, BookingRead, BookingUpdate
 
-from services.booking import (
+from probe.services.booking import (
     get_booking,
     list_bookings,
     create_booking,

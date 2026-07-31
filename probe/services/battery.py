@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from uuid import UUID
-from ..repositories import BatteryRepository, UserRepository
-from ..schemas.battery import BatteryCreate, BatteryUpdate
+from probe.repositories.battery import BatteryRepository, UserRepository
+from probe.schemas.battery import BatteryCreate, BatteryUpdate
 
 def get_battery(db: Session, battery_id: UUID):
    

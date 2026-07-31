@@ -1,0 +1,89 @@
+
+ ⚡️ Starting FastAPI in development mode
+ERROR    Import error: No module named 'enums'                                                                                                                                                          
+WARNING  Ensure all the package directories have an __init__.py file                                                                                                                                    
+
+╭───────────────────────────────────────────────────────────────────────────────── Traceback (most recent call last) ──────────────────────────────────────────────────────────────────────────────────╮
+│ /home/student/new-prob-draft/env/lib/python3.10/site-packages/fastapi_cli/cli.py:404 in dev                                                                                                          │
+│                                                                                                                                                                                                      │
+│   401 │   """                                                                                                                                                                                        │
+│   402 │   os.environ.setdefault("FASTAPI_ENV", "development")                                                                                                                                        │
+│   403 │                                                                                                                                                                                              │
+│ ❱ 404 │   _run(                                                                                                                                                                                      │
+│   405 │   │   path=path,                                                                                                                                                                             │
+│   406 │   │   host=host,                                                                                                                                                                             │
+│   407 │   │   port=port,                                                                                                                                                                             │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/env/lib/python3.10/site-packages/fastapi_cli/cli.py:182 in _run                                                                                                         │
+│                                                                                                                                                                                                      │
+│   179 │   │   try:                                                                                                                                                                                   │
+│   180 │   │   │   # Resolve import data with priority: CLI path/app > config entrypoint > auto-discovery                                                                                             │
+│   181 │   │   │   if path or app:                                                                                                                                                                    │
+│ ❱ 182 │   │   │   │   import_data = get_import_data(path=path, app_name=app)                                                                                                                         │
+│   183 │   │   │   elif config.entrypoint:                                                                                                                                                            │
+│   184 │   │   │   │   import_data = get_import_data_from_import_string(                                                                                                                              │
+│   185 │   │   │   │   │   config.entrypoint, config.from_pyproject                                                                                                                                   │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/env/lib/python3.10/site-packages/fastapi_cli/discover.py:143 in get_import_data                                                                                         │
+│                                                                                                                                                                                                      │
+│   140 │   │   raise FastAPICLIException(f"Path does not exist {path}")                                                                                                                               │
+│   141 │   mod_data = get_module_data_from_path(path)                                                                                                                                                 │
+│   142 │   sys.path.insert(0, str(mod_data.extra_sys_path))                                                                                                                                           │
+│ ❱ 143 │   use_app_name = get_app_name(mod_data=mod_data, app_name=app_name)                                                                                                                          │
+│   144 │                                                                                                                                                                                              │
+│   145 │   import_string = f"{mod_data.module_import_str}:{use_app_name}"                                                                                                                             │
+│   146                                                                                                                                                                                                │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/env/lib/python3.10/site-packages/fastapi_cli/discover.py:70 in get_app_name                                                                                             │
+│                                                                                                                                                                                                      │
+│    67                                                                                                                                                                                                │
+│    68 def get_app_name(*, mod_data: ModuleData, app_name: str | None = None) -> str:                                                                                                                 │
+│    69 │   try:                                                                                                                                                                                       │
+│ ❱  70 │   │   mod = importlib.import_module(mod_data.module_import_str)                                                                                                                              │
+│    71 │   except (ImportError, ValueError) as e:                                                                                                                                                     │
+│    72 │   │   logger.error(f"Import error: {e}")                                                                                                                                                     │
+│    73 │   │   logger.warning(                                                                                                                                                                        │
+│                                                                                                                                                                                                      │
+│ /usr/local/lib/python3.10/importlib/__init__.py:126 in import_module                                                                                                                                 │
+│                                                                                                                                                                                                      │
+│   123 │   │   │   if character != '.':                                                                                                                                                               │
+│   124 │   │   │   │   break                                                                                                                                                                          │
+│   125 │   │   │   level += 1                                                                                                                                                                         │
+│ ❱ 126 │   return _bootstrap._gcd_import(name[level:], package, level)                                                                                                                                │
+│   127                                                                                                                                                                                                │
+│   128                                                                                                                                                                                                │
+│   129 _RELOADING = {}                                                                                                                                                                                │
+│ in _gcd_import:1050                                                                                                                                                                                  │
+│ in _find_and_load:1027                                                                                                                                                                               │
+│ in _find_and_load_unlocked:1006                                                                                                                                                                      │
+│ in _load_unlocked:688                                                                                                                                                                                │
+│ in exec_module:883                                                                                                                                                                                   │
+│ in _call_with_frames_removed:241                                                                                                                                                                     │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/main.py:3 in <module>                                                                                                                                                   │
+│                                                                                                                                                                                                      │
+│    1 from database import Base, engine                                                                                                                                                               │
+│    2 from fastapi import FastAPI                                                                                                                                                                     │
+│ ❱  3 import probe.models as models                                                                                                                                                                   │
+│    4                                                                                                                                                                                                 │
+│    5 Base.metadata.create_all(bind=engine)                                                                                                                                                           │
+│    6 app = FastAPI(title="probe API", version="1.0.0")                                                                                                                                               │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/probe/models/__init__.py:1 in <module>                                                                                                                                  │
+│                                                                                                                                                                                                      │
+│ ❱ 1 from .user import User                                                                                                                                                                           │
+│   2 from .device import Device                                                                                                                                                                       │
+│   3 from .battery import Battery                                                                                                                                                                     │
+│   4 from .sensor_reading import SensorReading                                                                                                                                                        │
+│                                                                                                                                                                                                      │
+│ /home/student/new-prob-draft/probe/models/user.py:11 in <module>                                                                                                                                     │
+│                                                                                                                                                                                                      │
+│    8 from sqlalchemy.dialects.postgresql import UUID                                                                                                                                                 │
+│    9 from sqlalchemy.orm import relationship                                                                                                                                                         │
+│   10 from database import Base, TimestampMixin                                                                                                                                                       │
+│ ❱ 11 from enums import UserType                                                                                                                                                                      │
+│   12                                                                                                                                                                                                 │
+│   13                                                                                                                                                                                                 │
+│   14                                                                                                                                                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+ModuleNotFoundError: No module named 'enums'

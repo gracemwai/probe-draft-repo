@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-from enums import BookingStatus
+from .enums import BookingStatus
 
 from pydantic import BaseModel, ConfigDict
 

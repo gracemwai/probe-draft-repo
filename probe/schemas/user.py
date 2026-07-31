@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-from enums import UserType
+from .enums import UserType
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 

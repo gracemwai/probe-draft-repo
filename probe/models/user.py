@@ -8,7 +8,7 @@ from sqlalchemy import(
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from database import Base, TimestampMixin
-from enums import UserType
+from .enums import UserType
 
 
 
