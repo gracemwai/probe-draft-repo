@@ -2,18 +2,21 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from models.user import User
+from probe.models.user import User
 
 
 class UserRepository:
     def __init__(self):
         self.model = User
 
-    def get(self, db: Session, id: uuid.UUID):
+    def get_by_id(self, db: Session, id: uuid.UUID):
         return db.get(self.model, id)
 
     def get_all(self, db: Session):
         return db.query(self.model).all()
+
+    def get_by_email(self, db: Session, email: str):
+        return db.query(self.model).filter(self.model.email == email).first()
 
     def create(self, db: Session, data: dict):
         user = self.model(**data)

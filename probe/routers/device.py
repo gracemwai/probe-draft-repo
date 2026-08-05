@@ -7,7 +7,7 @@ from probe.services.device import (
     get_device,
     list_devices,
     create_device,
-    update_deviceid,
+    update_device,
     delete_device
 )
 
@@ -33,7 +33,7 @@ def route_create_device(data: DeviceCreate, db: Session = Depends(get_db)):
 
 @router.put("/{device_id}", response_model=DeviceRead)
 def route_update_device(device_id: uuid.UUID, data: DeviceUpdate, db: Session = Depends(get_db)):
-    db_device = update_deviceid(db, device_id, data)
+    db_device = update_device(db, device_id, data)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device record not found")
     return db_device

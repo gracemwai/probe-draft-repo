@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from uuid import UUID
 
-from probe.repositories.device import DeviceRepository, UserRepository
+from probe.repositories.device import DeviceRepository
+from probe.repositories.user import UserRepository
 from probe.schemas.device import DeviceCreate, DeviceUpdate
 
 def get_device(db: Session, device_id: UUID):

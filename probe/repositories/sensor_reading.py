@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from models.sensor_reading import SensorReading
+from probe.models.sensor_reading import SensorReading
 
 
 class SensorReadingRepository:
