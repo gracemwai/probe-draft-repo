@@ -25,7 +25,7 @@ class Battery(Base, TimestampMixin):
 
 
 
-    recycler = relationship("users", back_populates="batteries")
-    device = relationship("devices", back_populates="batteries")
-    sensor_readings = relationship("sensor_readings", back_populates="batteries")
-    bookings = relationship("bookings", back_populates="batteries")
+    recycler = relationship("User", back_populates="batteries")
+    device = relationship("Device", back_populates="batteries")
+    sensor_readings = relationship("SensorReading", back_populates="battery")
+    bookings = relationship("Booking", back_populates="battery")

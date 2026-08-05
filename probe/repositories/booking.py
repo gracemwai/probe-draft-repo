@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from models.booking import Booking
+from probe.models.booking import Booking
 
 
 class BookingRepository:

@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from models.device import Device
+from probe.models.device import Device
 
 
 class DeviceRepository:
